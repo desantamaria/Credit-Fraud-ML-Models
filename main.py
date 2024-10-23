@@ -14,11 +14,10 @@ def load_model(filename):
 
 # Load Models
 xgboost_model = load_model('xgboost-SMOTE.pkl')
-naive_bayes_model = load_model('naive-bayes-SMOTE.pkl')
-random_forest_model = load_model('random-forest-SMOTE.pkl')
-decision_tree_model = load_model('decision-tree-SMOTE.pkl')
-extra_trees_model = load_model('extra-trees-SMOTE.pkl')
-knn_model = load_model('knn-SMOTE.pkl')
+naive_bayes_model = load_model('nb_model.pkl')  
+random_forest_model = load_model('rf_model.pkl')
+decision_tree_model = load_model('dt_model.pkl')
+extra_trees_model = load_model('et_model.pkl')
 
 # Preprocess given data into a dataframe
 def preprocess_data(transaction_dict):
@@ -48,18 +47,6 @@ def preprocess_data(transaction_dict):
     }
 
     customer_df = pd.DataFrame([input_dict])
-
-    # Ensure columns are in the exact order expected by the model
-    transaction_columns = [
-        'amt', 'zip', 'lat', 'long', 'unix_time', 'merch_lat', 'merch_long', 'gender_M',
-        'category_food_dining', 'category_gas_transport', 'category_grocery_net', 
-        'category_grocery_pos', 'category_health_fitness', 'category_home', 
-        'category_kids_pets', 'category_misc_net', 'category_misc_pos', 
-        'category_personal_care', 'category_shopping_net', 'category_shopping_pos', 
-        'category_travel'
-    ]
-    
-    customer_df = customer_df[transaction_columns]
     return customer_df
 
 
@@ -74,7 +61,6 @@ def get_prediction(transaction_dict):
         'Random Forest': random_forest_model.predict(preprocessed_data)[0],
         'Decision Tree': decision_tree_model.predict(preprocessed_data)[0],
         'Extra Trees': extra_trees_model.predict(preprocessed_data)[0],
-        'K-Nearest Neighbors': knn_model.predict(preprocessed_data)[0],
     }
     
     # Get probabilities from models that support predict_proba
@@ -84,7 +70,6 @@ def get_prediction(transaction_dict):
         'Random Forest': random_forest_model.predict_proba(preprocessed_data)[0][1],
         'Decision Tree': decision_tree_model.predict_proba(preprocessed_data)[0][1],
         'Extra Trees': extra_trees_model.predict_proba(preprocessed_data)[0][1],
-        'K-Nearest Neighbors': knn_model.predict_proba(preprocessed_data)[0][1],
     }
     
     return predictions, probabilities
