@@ -19,6 +19,7 @@ random_forest_model = load_model('rf_model.pkl')
 decision_tree_model = load_model('dt_model.pkl')
 extra_trees_model = load_model('et_model.pkl')
 random_forest_model_SMOTE = load_model('random-forest-SMOTE.pkl')
+extra_trees_model_SMOTE = load_model('extra-trees-SMOTE.pkl')
 
 # Preprocess given data into a dataframe
 def preprocess_data(transaction_dict):
@@ -63,6 +64,7 @@ def get_prediction(transaction_dict):
         'Decision Tree': decision_tree_model.predict(preprocessed_data)[0],
         'Extra Trees': extra_trees_model.predict(preprocessed_data)[0],
         'Random Forest SMOTE': random_forest_model_SMOTE.predict(preprocessed_data)[0],
+        'Extra Trees SMOTE': extra_trees_model_SMOTE.predict(preprocessed_data)[0],
     }
     
     # Get probabilities from models that support predict_proba
@@ -73,6 +75,7 @@ def get_prediction(transaction_dict):
         'Decision Tree': decision_tree_model.predict_proba(preprocessed_data)[0][1],
         'Extra Trees': extra_trees_model.predict_proba(preprocessed_data)[0][1],
         'Random Forest SMOTE': random_forest_model_SMOTE.predict_proba(preprocessed_data)[0][1],
+        'Extra Trees SMOTE': extra_trees_model_SMOTE.predict_proba(preprocessed_data)[0][1],
     }
     
     return predictions, probabilities
