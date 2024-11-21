@@ -73,6 +73,8 @@ def list_results(data):
     return avg_prediction, avg_probability
 
 
+  #aslkfdnsalknfalknfakfaf
+
 def explain_prediction(probability, input_dict, surname):
     prompt = f"""You are an expert data scientist at a bank, specializing in interpreting and explaining credit card fraud detection predictions. The machine learning model predicts that the transaction for customer {surname} has a {round(probability * 100, 1)}% likelihood of being fraudulent, based on the following transaction details:
 
