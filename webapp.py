@@ -10,7 +10,7 @@ client = OpenAI(base_url="https://api.groq.com/openai/v1",
                 api_key=os.environ.get('GROQ_API_KEY'))
 
 url = "https://credit-fraud-ml-models.onrender.com/predict"
-
+ 
 
 def prepare_input(trans_date_trans_time, cc_num, merchant, category, amt,
       first, last, gender, street, city, state, zip, lat, long,
