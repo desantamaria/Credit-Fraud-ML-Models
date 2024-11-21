@@ -11,7 +11,23 @@ client = OpenAI(base_url="https://api.groq.com/openai/v1",
 
 url = "https://credit-fraud-ml-models.onrender.com/predict"
  
+def list_results(data):
 
+    avg_prediction = int(np.mean(list(data['prediction'].values())))
+
+    st.markdown("### Model Predictions")
+    for model, pred in data['prediction'].items():
+        st.write(f"- {model}: {pred}")
+    st.write(f"Average Prediction: {avg_prediction}")
+
+    avg_probability = np.mean(list(data['probability'].values()))
+
+    st.markdown("### Model Probabilities")
+    for model, prob in data['probability'].items():
+        st.write(f"- {model}: {prob}")
+    st.write(f"Average Probability: {avg_probability}")
+
+    return avg_prediction, avg_probability
 def prepare_input(trans_date_trans_time, cc_num, merchant, category, amt,
       first, last, gender, street, city, state, zip, lat, long,
       city_pop, job, dob, trans_num, unix_time, merch_lat,
@@ -52,25 +68,6 @@ def prepare_input(trans_date_trans_time, cc_num, merchant, category, amt,
     }
     
     return input_dict
-
-
-def list_results(data):
-
-    avg_prediction = int(np.mean(list(data['prediction'].values())))
-
-    st.markdown("### Model Predictions")
-    for model, pred in data['prediction'].items():
-        st.write(f"- {model}: {pred}")
-    st.write(f"Average Prediction: {avg_prediction}")
-
-    avg_probability = np.mean(list(data['probability'].values()))
-
-    st.markdown("### Model Probabilities")
-    for model, prob in data['probability'].items():
-        st.write(f"- {model}: {prob}")
-    st.write(f"Average Probability: {avg_probability}")
-
-    return avg_prediction, avg_probability
 
 
   #aslkfdnsalknfalknfakfaf
