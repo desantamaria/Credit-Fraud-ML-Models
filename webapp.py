@@ -167,7 +167,8 @@ if selected_transaction_option:
                                     value=int(
                                         selected_transaction["unix_time"]))
 
-    with col2:
+    # Test Change
+    with col3:
         first = st.text_input("First Name", selected_transaction["first"])
         last = st.text_input("Last Name", selected_transaction["last"])
         gender = st.radio(
