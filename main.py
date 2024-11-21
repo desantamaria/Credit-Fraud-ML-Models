@@ -84,8 +84,9 @@ async def predict(data: dict):
     probabilities = {model: float(prob) for model, prob in probabilities.items()}
 
     return {
-        "prediction": prediction,
         "probability": probabilities
+        "prediction": prediction,
+
     }
 
 # Run the app
