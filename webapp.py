@@ -10,8 +10,24 @@ client = OpenAI(base_url="https://api.groq.com/openai/v1",
                 api_key=os.environ.get('GROQ_API_KEY'))
 
 url = "https://credit-fraud-ml-models.onrender.com/predict"
+ 
+def list_results(data):
 
+    avg_prediction = int(np.mean(list(data['prediction'].values())))
 
+    st.markdown("### Model Predictions")
+    for model, pred in data['prediction'].items():
+        st.write(f"- {model}: {pred}")
+    st.write(f"Average Prediction: {avg_prediction}")
+
+    avg_probability = np.mean(list(data['probability'].values()))
+
+    st.markdown("### Model Probabilities")
+    for model, prob in data['probability'].items():
+        st.write(f"- {model}: {prob}")
+    st.write(f"Average Probability: {avg_probability}")
+
+    return avg_prediction, avg_probability
 def prepare_input(trans_date_trans_time, cc_num, merchant, category, amt,
       first, last, gender, street, city, state, zip, lat, long,
       city_pop, job, dob, trans_num, unix_time, merch_lat,
@@ -54,24 +70,7 @@ def prepare_input(trans_date_trans_time, cc_num, merchant, category, amt,
     return input_dict
 
 
-def list_results(data):
-
-    avg_prediction = int(np.mean(list(data['prediction'].values())))
-
-    st.markdown("### Model Predictions")
-    for model, pred in data['prediction'].items():
-        st.write(f"- {model}: {pred}")
-    st.write(f"Average Prediction: {avg_prediction}")
-
-    avg_probability = np.mean(list(data['probability'].values()))
-
-    st.markdown("### Model Probabilities")
-    for model, prob in data['probability'].items():
-        st.write(f"- {model}: {prob}")
-    st.write(f"Average Probability: {avg_probability}")
-
-    return avg_prediction, avg_probability
-
+  #aslkfdnsalknfalknfakfaf
 
 def explain_prediction(probability, input_dict, surname):
     prompt = f"""You are an expert data scientist at a bank, specializing in interpreting and explaining credit card fraud detection predictions. The machine learning model predicts that the transaction for customer {surname} has a {round(probability * 100, 1)}% likelihood of being fraudulent, based on the following transaction details:
@@ -167,7 +166,8 @@ if selected_transaction_option:
                                     value=int(
                                         selected_transaction["unix_time"]))
 
-    with col2:
+    # Test Change
+    with col3:
         first = st.text_input("First Name", selected_transaction["first"])
         last = st.text_input("Last Name", selected_transaction["last"])
         gender = st.radio(
