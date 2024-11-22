@@ -19,6 +19,30 @@ random_forest_model = load_model('random-forest-SMOTE.pkl')
 decision_tree_model = load_model('decision-tree-SMOTE.pkl')
 extra_trees_model = load_model('extra-trees-SMOTE.pkl')
 
+# Get predictions and probabilities from all models and return average
+def get_prediction(transaction_dict):
+    preprocessed_data = preprocess_data(transaction_dict)
+
+    # Get predictions from all models
+    predictions = {
+        'XGBoost': xgboost_model.predict(preprocessed_data)[0],
+        'Naive Bayes': naive_bayes_model.predict(preprocessed_data)[0],
+        'Random Forest': random_forest_model.predict(preprocessed_data)[0],
+        'Decision Tree': decision_tree_model.predict(preprocessed_data)[0],
+        'Extra Trees': extra_trees_model.predict(preprocessed_data)[0],
+    }
+    
+    # Get probabilities from models that support predict_proba
+    probabilities = {
+        'XGBoost': xgboost_model.predict_proba(preprocessed_data)[0][1],
+        'Naive Bayes': naive_bayes_model.predict_proba(preprocessed_data)[0][1],
+        'Random Forest': random_forest_model.predict_proba(preprocessed_data)[0][1],
+        'Decision Tree': decision_tree_model.predict_proba(preprocessed_data)[0][1],
+        'Extra Trees': extra_trees_model.predict_proba(preprocessed_data)[0][1],
+    }
+    
+    return predictions, probabilities
+
 # Preprocess given data into a dataframe
 def preprocess_data(transaction_dict):
     # Create the base input dictionary with exact feature names from training
@@ -48,31 +72,6 @@ def preprocess_data(transaction_dict):
 
     customer_df = pd.DataFrame([input_dict])
     return customer_df
-
-
-# Get predictions and probabilities from all models and return average
-def get_prediction(transaction_dict):
-    preprocessed_data = preprocess_data(transaction_dict)
-
-    # Get predictions from all models
-    predictions = {
-        'XGBoost': xgboost_model.predict(preprocessed_data)[0],
-        'Naive Bayes': naive_bayes_model.predict(preprocessed_data)[0],
-        'Random Forest': random_forest_model.predict(preprocessed_data)[0],
-        'Decision Tree': decision_tree_model.predict(preprocessed_data)[0],
-        'Extra Trees': extra_trees_model.predict(preprocessed_data)[0],
-    }
-    
-    # Get probabilities from models that support predict_proba
-    probabilities = {
-        'XGBoost': xgboost_model.predict_proba(preprocessed_data)[0][1],
-        'Naive Bayes': naive_bayes_model.predict_proba(preprocessed_data)[0][1],
-        'Random Forest': random_forest_model.predict_proba(preprocessed_data)[0][1],
-        'Decision Tree': decision_tree_model.predict_proba(preprocessed_data)[0][1],
-        'Extra Trees': extra_trees_model.predict_proba(preprocessed_data)[0][1],
-    }
-    
-    return predictions, probabilities
 
 # Endpoint to get predictions and probabilities
 @app.post("/predict")
